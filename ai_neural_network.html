@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Neural Network</title>
+    <style>
+        :root {
+            --bg-color: #0a0a10;
+            --node-color: #ffffff;
+            --pulse-color-1: #00aaff;
+            --pulse-color-2: #ff00ff;
+            --line-color: rgba(0, 170, 255, 0.2);
+            --card-bg: rgba(15, 15, 25, 0.9);
+            --card-border: rgba(0, 170, 255, 0.5);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #e0e0e0;
+            font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        #neural-network {
+            position: absolute;
+            inset: 0;
+        }
+
+        .node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--node-color);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--node-color);
+            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+        
+        .node.main-node {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+        
+        .node-label {
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #aaa;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .node.main-node:hover {
+            transform: scale(1.5);
+        }
+        
+        .node.main-node:hover + .node-label {
+            opacity: 1;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 8px var(--node-color), 0 0 12px var(--pulse-color-1); }
+            50% { box-shadow: 0 0 16px var(--node-color), 0 0 24px var(--pulse-color-1); }
+            100% { box-shadow: 0 0 8px var(--node-color), 0 0 12px var(--pulse-color-1); }
+        }
+        
+        .info-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 90vw;
+            max-width: 650px;
+            max-height: 80vh;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 100;
+            display: flex; flex-direction: column;
+        }
+        
+        .info-card.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: all;
+        }
+        
+        .info-card-header { padding: 20px 30px; border-bottom: 1px solid var(--card-border); }
+        .info-card-header h2 { margin: 0; font-size: 1.8em; color: var(--pulse-color-1); }
+        .info-card-body { padding: 20px 30px; overflow-y: auto; flex-grow: 1; }
+        .info-card-body h3 { color: var(--pulse-color-2); }
+        
+        .close-button {
+            position: absolute; top: 15px; right: 15px; width: 30px; height: 30px;
+            cursor: pointer; opacity: 0.7; transition: opacity 0.3s, transform 0.3s;
+        }
+        .close-button:hover { opacity: 1; transform: rotate(90deg); }
+        .close-button::before, .close-button::after {
+            content: ''; position: absolute; top: 50%; left: 15%; width: 70%; height: 2px; background: white;
+        }
+        .close-button::before { transform: rotate(45deg); }
+        .close-button::after { transform: rotate(-45deg); }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="neural-network"></canvas>
+    <div id="nodes-container"></div>
+    <div id="info-cards-container"></div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('neural-network');
+        const ctx = canvas.getContext('2d');
+        const nodesContainer = document.getElementById('nodes-container');
+        const infoCardsContainer = document.getElementById('info-cards-container');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const sections = [
+            { id: 's1', title: '1. 事業概要・背景', content: `<p>私たちACTSYSTEMSでは、<strong>2024年から新たなチームを編成し、AI事業をスタート</strong>いたしました。この事業は、当社の新たな事業の一角を担う重要な取り組みとして位置づけております。</p>`},
+            { id: 's2', title: '2. 技術基盤・環境構築', content: `<p>当初は、ダイワボウ情報システム様からご紹介いただいたMicrosoft Azureを利用し、クラウド環境での基盤構築から始めました。現在では、<strong>独自にMicrosoft Azureの環境を利活用</strong>し、AI技術を駆使したサービス開発を進めております。</p>`},
+            { id: 's3', title: '3. 主要サービス', content: `<h3>3-1. OASIS（RAGシステム）</h3><p>RAG開発のノウハウを活用し、プライベートクラウド環境で構築したシステムです。<strong>社外秘の重要な情報を、LLM技術を使ってチャットベースでの質問・回答を可能にする</strong>ソリューションです。</p><h3>3-2. ヘルプデスクソリューション</h3><p>店舗からの問い合わせ対応履歴をAI検索できるシステムを開発しました。<strong>過去の対応履歴は貴重な企業資産</strong>として蓄積されており、それを有効活用する手段の一つとして位置づけております。</p>`},
+            { id: 's4', title: '4. チャットボット活用に関する考察', content: `<p>チャットボット成功の最重要ポイントは<strong>「どうやったらみんなが利用してくれる機能になるのか」</strong>という点だと考えております。「電話したほうが早い」「結局使えない」といった状況に陥らないよう、実際に役立つシステムづくりが何より大切です。</p>`},
+            { id: 's5', title: '5. 戦略的パートナーシップ', content: `<p>ソフトバンクの備後デジタルLABと提携し、<strong>地方創生を目的とした活動</strong>に参加しております。具体的には、備後地方における繊維産業を、デジタルやAIの活用によって新たなステージへ進めていこうとする取り組みです。</p>`},
+            { id: 's6', title: '6. まとめ', content: `<p>私たちACTSYSTEMSは、AI技術を活用した実用的なソリューションの提供を通じて、お客様の業務効率化と価値創造に貢献してまいります。今後ともよろしくお願いいたします。</p>`}
+        ];
+
+        let nodes = [];
+        const mainNodes = [];
+        const coreNode = { x: canvas.width / 2, y: canvas.height / 2, isCore: true };
+        nodes.push(coreNode);
+
+        const radius = Math.min(canvas.width, canvas.height) * 0.3;
+        const angleStep = (2 * Math.PI) / sections.length;
+
+        sections.forEach((section, i) => {
+            const angle = i * angleStep;
+            const x = coreNode.x + Math.cos(angle) * radius;
+            const y = coreNode.y + Math.sin(angle) * radius;
+            const node = { x, y, id: section.id };
+            nodes.push(node);
+            mainNodes.push(node);
+
+            // Create DOM Node
+            const nodeEl = document.createElement('div');
+            nodeEl.className = 'node main-node';
+            nodeEl.style.left = `${x - 10}px`;
+            nodeEl.style.top = `${y - 10}px`;
+            nodeEl.addEventListener('click', () => openCard(section.id));
+            
+            const labelEl = document.createElement('div');
+            labelEl.className = 'node-label';
+            labelEl.textContent = section.title;
+
+            nodesContainer.appendChild(nodeEl);
+            nodeEl.appendChild(labelEl);
+
+            // Create Info Card
+            const card = document.createElement('div');
+            card.className = 'info-card';
+            card.id = section.id;
+            card.innerHTML = `
+                <div class="close-button"></div>
+                <div class="info-card-header"><h2>${section.title}</h2></div>
+                <div class="info-card-body">${section.content}</div>
+            `;
+            infoCardsContainer.appendChild(card);
+            card.querySelector('.close-button').addEventListener('click', () => closeCard(section.id));
+        });
+
+        // Create background nodes
+        for (let i = 0; i < 100; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                isBg: true
+            });
+        }
+        
+        let pulses = [];
+
+        function openCard(id) {
+            const activeCard = document.querySelector('.info-card.active');
+            if(activeCard) activeCard.classList.remove('active');
+            
+            document.getElementById(id).classList.add('active');
+            
+            const startNode = mainNodes.find(n => n.id === id);
+            if(startNode) {
+                 pulses.push({ x: startNode.x, y: startNode.y, targetX: coreNode.x, targetY: coreNode.y, progress: 0, speed: 0.02 });
+            }
+        }
+
+        function closeCard(id) {
+            document.getElementById(id).classList.remove('active');
+            pulses.push({ x: coreNode.x, y: coreNode.y, targetX: Math.random() * canvas.width, targetY: Math.random() * canvas.height, progress: 0, speed: 0.01, isRandom: true });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw lines
+            ctx.strokeStyle = var(--line-color);
+            ctx.lineWidth = 0.5;
+            nodes.forEach(node1 => {
+                nodes.forEach(node2 => {
+                    const dist = Math.hypot(node1.x - node2.x, node1.y - node2.y);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(node1.x, node1.y);
+                        ctx.lineTo(node2.x, node2.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+            
+            mainNodes.forEach(node => {
+                 ctx.beginPath();
+                 ctx.moveTo(node.x, node.y);
+                 ctx.lineTo(coreNode.x, coreNode.y);
+                 ctx.stroke();
+            });
+
+            // Update and draw background nodes
+            nodes.forEach(node => {
+                if (node.isBg) {
+                    node.x += node.vx;
+                    node.y += node.vy;
+                    if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                    if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+                    
+                    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+            
+            // Draw pulses
+            pulses.forEach((pulse, index) => {
+                pulse.progress += pulse.speed;
+                const currentX = pulse.x + (pulse.targetX - pulse.x) * pulse.progress;
+                const currentY = pulse.y + (pulse.targetY - pulse.y) * pulse.progress;
+                
+                ctx.beginPath();
+                const gradient = ctx.createRadialGradient(currentX, currentY, 0, currentX, currentY, 10);
+                gradient.addColorStop(0, pulse.isRandom ? var(--pulse-color-2) : var(--pulse-color-1));
+                gradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = gradient;
+                ctx.arc(currentX, currentY, 10, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (pulse.progress >= 1) {
+                    pulses.splice(index, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    });
+    </script>
+</body>
+</html>

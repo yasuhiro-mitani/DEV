@@ -3,246 +3,360 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI事業紹介資料</title>
+    <title>AI Genesis Map</title>
     <style>
         :root {
-            --bg-color-start: #eaf0f9;
-            --bg-color-end: #f5f7fa;
-            --primary-text-color: #2c3e50;
-            --secondary-text-color: #5a6a7a;
-            --card-bg-color: #ffffff;
-            --border-color: #e0e0e0;
-            --accent-color-1: #4a69bd;
-            --accent-color-2: #6a89cc;
-            --shadow-color: rgba(0, 0, 0, 0.08);
-            --placeholder-bg: #f0f2f5;
-            --placeholder-border: #d0d5db;
-            --placeholder-text: #888;
+            --bg-color: #000005;
+            --text-color: #e0e0e0;
+            --glow-color-1: #5e7ce2;
+            --glow-color-2: #8854d0;
+            --card-bg: rgba(10, 10, 20, 0.85);
+            --card-border: rgba(94, 124, 226, 0.5);
+            --star-size: 20px;
+            --core-size: 50px;
+        }
+
+        @keyframes slow-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px var(--glow-color-1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 35px var(--glow-color-1); }
+            100% { transform: scale(1); box-shadow: 0 0 20px var(--glow-color-1); }
+        }
+
+        @keyframes star-twinkle {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        @keyframes nebula-drift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-            background-color: var(--bg-color-start);
-            background-image: linear-gradient(135deg, var(--bg-color-start) 0%, var(--bg-color-end) 100%);
-            color: var(--primary-text-color);
-            line-height: 1.7;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
             margin: 0;
-            padding: 0;
-            overflow-x: hidden;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
         }
 
-        .container {
-            width: 90%;
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 50px 20px;
+        #universe {
+            position: absolute;
+            inset: 0;
+            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        
+        #background-stars {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(ellipse at top, transparent 0%, var(--bg-color)),
+                              radial-gradient(ellipse at bottom, var(--glow-color-2), transparent 100%);
+            opacity: 0.3;
+            animation: nebula-drift 60s ease infinite;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 70px;
+        #genesis-map {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
         }
 
-        h1 {
-            font-size: 2.8em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-2));
+        .star-system {
+            position: absolute;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .star {
+            width: var(--star-size);
+            height: var(--star-size);
+            background-color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 0 10px white, 0 0 20px var(--glow-color-2);
+            animation: star-twinkle 3s ease-in-out infinite;
+        }
+        
+        .star-label {
+            position: absolute;
+            bottom: 150%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-color);
+            background: rgba(0,0,0,0.5);
+            padding: 4px 10px;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .star:hover + .star-label {
+            opacity: 1;
+        }
+
+        #core {
+            width: var(--core-size);
+            height: var(--core-size);
+            background-color: var(--glow-color-1);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--glow-color-1);
+            animation: slow-pulse 4s ease-in-out infinite;
+            position: absolute;
+        }
+        
+        #core-label {
+             position: absolute;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+             color: white;
+             font-weight: bold;
+        }
+
+        .info-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            width: 90vw;
+            max-width: 700px;
+            height: 80vh;
+            max-height: 600px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-card.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: all;
+        }
+        
+        .info-card-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--card-border);
+        }
+        
+        .info-card-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+            background: linear-gradient(90deg, var(--glow-color-1), #fff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
         }
 
-        .section {
-            background: var(--card-bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 35px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 25px var(--shadow-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        h2 {
-            font-size: 1.8em;
-            font-weight: 600;
-            color: var(--accent-color-1);
-            border-bottom: 2px solid var(--accent-color-2);
-            padding-bottom: 10px;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
-
-        h3 {
-            font-size: 1.4em;
-            font-weight: 600;
-            color: var(--accent-color-1);
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-
-        p, ul {
-            margin-bottom: 1em;
-            font-weight: 400;
-            color: var(--secondary-text-color);
+        .info-card-body {
+            padding: 20px 30px;
+            overflow-y: auto;
+            flex-grow: 1;
         }
         
-        p strong {
-            font-weight: 600;
-            color: var(--primary-text-color);
-        }
+        .info-card-body h3 { color: var(--glow-color-1); }
+        .info-card-body p { line-height: 1.8; }
+        .info-card-body ul { list-style: none; padding-left: 0; }
+        .info-card-body li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+        .info-card-body li::before { content: '✧'; position: absolute; left: 0; color: var(--glow-color-1); }
 
-        ul {
-            padding-left: 20px;
-            list-style-type: none;
-        }
-
-        li {
-            margin-bottom: 10px;
-            position: relative;
-            padding-left: 25px;
-        }
-        
-        li::before {
-            content: '→';
+        .close-button {
             position: absolute;
-            left: 0;
-            color: var(--accent-color-2);
-            font-weight: bold;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s, transform 0.3s;
         }
-
-        .media-placeholder {
-            width: 100%;
-            min-height: 250px;
-            border: 2px dashed var(--placeholder-border);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--placeholder-bg);
-            margin-top: 25px;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-            text-align: center;
+        .close-button:hover { opacity: 1; transform: rotate(90deg); }
+        .close-button::before, .close-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 15%;
+            width: 70%;
+            height: 2px;
+            background: white;
         }
-
-        .media-placeholder:hover {
-            background-color: #e9ecef;
-            border-color: var(--accent-color-1);
-        }
-
-        .media-placeholder p {
-            color: var(--placeholder-text);
-            font-weight: 400;
-            margin: 0;
-        }
-
-        /* Scroll Animation */
-        .hidden-anim {
+        .close-button::before { transform: rotate(45deg); }
+        .close-button::after { transform: rotate(-45deg); }
+        
+        #universe.zoomed-in #genesis-map {
             opacity: 0;
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            pointer-events: none;
         }
-
-        .hidden-anim.from-left {
-            transform: translateX(-50px);
+        
+        /* Mobile Warning */
+        #mobile-warning {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg-color);
+            color: var(--text-color);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            z-index: 200;
         }
-
-        .hidden-anim.from-right {
-            transform: translateX(50px);
-        }
-
-        .show-anim {
-            opacity: 1;
-            transform: translateX(0);
+        
+        @media (max-width: 800px) {
+            #genesis-map, #universe {
+                display: none;
+            }
+            #mobile-warning {
+                display: flex;
+            }
         }
 
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>AI事業紹介</h1>
-        </header>
 
-        <div class="section hidden-anim from-left">
-            <h2>1. 事業概要・背景</h2>
-            <p>皆様、本日はお忙しい中お時間をいただき、ありがとうございます。</p>
-            <p>私たちACTSYSTEMSでは、<strong>2024年から新たなチームを編成し、AI事業をスタート</strong>いたしました。この事業は、当社の新たな事業の一角を担う重要な取り組みとして位置づけております。</p>
-            <p>昨今のAIトレンドは、ものすごいスピードで進化を続けており、そのトレンドを追いかけるだけでも大変な状況です。これを実際の事業として検討し、お客様に価値を提供できるサービスに仕上げるまでには、日々試行錯誤を繰り返しながら取り組んでおります。</p>
-            <div class="media-placeholder"><p>事業イメージビデオなどをここに挿入</p></div>
-        </div>
-
-        <div class="section hidden-anim from-right">
-            <h2>2. 技術基盤・環境構築</h2>
-            <p>当初は、ダイワボウ情報システム様からご紹介いただいたMicrosoft Azureを利用し、クラウド環境での基盤構築から始めました。現在では、<strong>独自にMicrosoft Azureの環境を利活用</strong>し、AI技術を駆使したサービス開発を進めております。</p>
-            <div class="media-placeholder"><p>技術スタックやアーキテクチャ図をここに挿入</p></div>
-        </div>
-
-        <div class="section hidden-anim from-left">
-            <h2>3. 主要サービス・ソリューション</h2>
-
-            <h3>3-1. OASIS（RAGシステム）</h3>
-            <p>これは、RAG（Retrieval-Augmented Generation）開発のノウハウを活用し、プライベートクラウド環境で構築したシステムです。<strong>社外秘の重要な情報を、LLM技術を使ってチャットベースでの質問・回答を可能にする</strong>ソリューションです。</p>
-            <p>多くの企業様から「自社の機密情報をAIの学習データとして取り込まれることはコンプライアンス上許されないが、AIを活用したいというニーズが高まっている」というお声をいただいたことが開発のきっかけでした。</p>
-            <div class="media-placeholder"><p>OASISのデモ動画をここに挿入</p></div>
-
-            <h3>3-2. ヘルプデスクソリューション</h3>
-            <p>店舗からの問い合わせ対応履歴をAI検索できるシステムを開発しました。<strong>過去の対応履歴は貴重な企業資産</strong>として蓄積されており、それを有効活用する手段の一つとして位置づけております。</p>
-            <p>AIを活用していく上で最も重要なのは「データ」です。そこで私たちが着目したのが、ヘルプデスクの対応履歴として蓄積された豊富なデータでした。</p>
-            <div class="media-placeholder"><p>ヘルプデスクソリューションの画面キャプチャをここに挿入</p></div>
-
-            <h3>3-3. デレデレ君（電話対応軽減ツール）</h3>
-            <p>このツールは、<strong>新入社員の離職要因を減らす</strong>ことを目的として開発しました。新入社員がよく直面する「入社当初のしんどい作業」として電話対応がありますが、この電話受付作業を軽減することで、働きやすい環境づくりをサポートします。</p>
-            <p>主な機能として：</p>
-            <ul>
-                <li>会話のリアルタイム文字起こし機能</li>
-                <li>文字起こし内容から固有名詞（人名）を検知する機能</li>
-                <li>社員スケジュールから情報を取得し、取次先の情報を即座に把握</li>
-                <li>これらによりスムーズな引継ぎを実現</li>
-            </ul>
-            <div class="media-placeholder"><p>デレデレ君の機能紹介動画をここに挿入</p></div>
-        </div>
-
-        <div class="section hidden-anim from-right">
-            <h2>4. チャットボット活用に関する考察</h2>
-            <p>店舗様にはすでにチャットボットを導入されているとお聞きしております。チャットボット成功の最重要ポイントは<strong>「どうやったらみんなが利用してくれる機能になるのか」</strong>という点だと考えております。</p>
-            <p>「電話したほうが早い」「結局使えない」といった状況に陥らないよう、実際に役立つシステムづくりが何より大切です。</p>
-            <div class="media-placeholder"><p>活用イメージや比較図などをここに挿入</p></div>
-        </div>
-
-        <div class="section hidden-anim from-left">
-            <h2>5. 戦略的パートナーシップ</h2>
-            <p>ソフトバンクの備後デジタルLABと提携し、<strong>地方創生を目的とした活動</strong>に参加しております。具体的には、備後地方における繊維産業を、デジタルやAIの活用によって新たなステージへ進めていこうとする取り組みです。</p>
-            <p>備後地方を拠点とされている青山商事様とも、この取り組みを通じて面白いお話ができるのではないかと、弊社でも積極的に取り組んでおります。</p>
-            <div class="media-placeholder"><p>備後デジタルLABとの連携イメージ画像をここに挿入</p></div>
-        </div>
-
-        <div class="section hidden-anim from-right">
-            <h2>6. まとめ</h2>
-            <p>私たちACTSYSTEMSは、AI技術を活用した実用的なソリューションの提供を通じて、お客様の業務効率化と価値創造に貢献してまいります。今後ともよろしくお願いいたします。</p>
-            <p>ご質問やご相談がございましたら、どうぞお気軽にお声がけください。</p>
+    <div id="universe">
+        <div id="background-stars"></div>
+        <div id="genesis-map">
+            <div id="core"><div id="core-label">ACT</div></div>
+            <!-- Star Systems will be injected here by JavaScript -->
         </div>
     </div>
 
-    <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show-anim');
-                } else {
-                    // アニメーションを繰り返したい場合は下のコメントを外す
-                    // entry.target.classList.remove('show-anim');
-                }
-            });
-        }, { threshold: 0.1 }); // 少し表示されたらアニメーションを開始
+    <div id="info-cards-container">
+        <!-- Info Cards will be injected here by JavaScript -->
+    </div>
+    
+    <div id="mobile-warning">
+        <p>この体験は、より広い画面で最適に表示されます。<br>PCでの閲覧を推奨します。</p>
+    </div>
 
-        const hiddenElements = document.querySelectorAll('.hidden-anim');
-        hiddenElements.forEach((el) => observer.observe(el));
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const genesisMap = document.getElementById('genesis-map');
+            const infoCardsContainer = document.getElementById('info-cards-container');
+            const universe = document.getElementById('universe');
+
+            const sections = [
+                { id: 's1', title: '1. 事業概要・背景', content: `
+                    <p>皆様、本日はお忙しい中お時間をいただき、ありがとうございます。</p>
+                    <p>私たちACTSYSTEMSでは、<strong>2024年から新たなチームを編成し、AI事業をスタート</strong>いたしました。この事業は、当社の新たな事業の一角を担う重要な取り組みとして位置づけております。</p>
+                    <p>昨今のAIトレンドは、ものすごいスピードで進化を続けており、そのトレンドを追いかけるだけでも大変な状況です。これを実際の事業として検討し、お客様に価値を提供できるサービスに仕上げるまでには、日々試行錯誤を繰り返しながら取り組んでおります。</p>
+                `},
+                { id: 's2', title: '2. 技術基盤・環境構築', content: `
+                    <p>当初は、ダイワボウ情報システム様からご紹介いただいたMicrosoft Azureを利用し、クラウド環境での基盤構築から始めました。現在では、<strong>独自にMicrosoft Azureの環境を利活用</strong>し、AI技術を駆使したサービス開発を進めております。</p>
+                `},
+                { id: 's3', title: '3. 主要サービス', content: `
+                    <h3>3-1. OASIS（RAGシステム）</h3>
+                    <p>これは、RAG開発のノウハウを活用し、プライベートクラウド環境で構築したシステムです。<strong>社外秘の重要な情報を、LLM技術を使ってチャットベースでの質問・回答を可能にする</strong>ソリューションです。</p>
+                    <h3>3-2. ヘルプデスクソリューション</h3>
+                    <p>店舗からの問い合わせ対応履歴をAI検索できるシステムを開発しました。<strong>過去の対応履歴は貴重な企業資産</strong>として蓄積されており、それを有効活用する手段の一つとして位置づけております。</p>
+                    <h3>3-3. デレデレ君（電話対応軽減ツール）</h3>
+                    <p>このツールは、<strong>新入社員の離職要因を減らす</strong>ことを目的として開発しました。電話受付作業を軽減することで、働きやすい環境づくりをサポートします。</p>
+                `},
+                { id: 's4', title: '4. チャットボット活用に関する考察', content: `
+                    <p>店舗様にはすでにチャットボットを導入されているとお聞きしております。チャットボット成功の最重要ポイントは<strong>「どうやったらみんなが利用してくれる機能になるのか」</strong>という点だと考えております。</p>
+                    <p>「電話したほうが早い」「結局使えない」といった状況に陥らないよう、実際に役立つシステムづくりが何より大切です。</p>
+                `},
+                { id: 's5', title: '5. 戦略的パートナーシップ', content: `
+                    <p>ソフトバンクの備後デジタルLABと提携し、<strong>地方創生を目的とした活動</strong>に参加しております。具体的には、備後地方における繊維産業を、デジタルやAIの活用によって新たなステージへ進めていこうとする取り組みです。</p>
+                `},
+                { id: 's6', title: '6. まとめ', content: `
+                    <p>私たちACTSYSTEMSは、AI技術を活用した実用的なソリューションの提供を通じて、お客様の業務効率化と価値創造に貢献してまいります。今後ともよろしくお願いいたします。</p>
+                    <p>ご質問やご相談がございましたら、どうぞお気軽にお声がけください。</p>
+                `}
+            ];
+
+            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.35;
+            const angleStep = (2 * Math.PI) / sections.length;
+
+            sections.forEach((section, i) => {
+                const angle = i * angleStep;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+
+                // Create Star
+                const starSystem = document.createElement('div');
+                starSystem.className = 'star-system';
+                starSystem.style.transform = `translate(${x}px, ${y}px)`;
+                starSystem.dataset.starId = section.id;
+
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const label = document.createElement('div');
+                label.className = 'star-label';
+                label.textContent = section.title;
+
+                starSystem.appendChild(star);
+                starSystem.appendChild(label);
+                genesisMap.appendChild(starSystem);
+
+                // Create Info Card
+                const card = document.createElement('div');
+                card.className = 'info-card';
+                card.id = section.id;
+                card.innerHTML = `
+                    <div class="close-button"></div>
+                    <div class="info-card-header"><h2>${section.title}</h2></div>
+                    <div class="info-card-body">${section.content}</div>
+                `;
+                infoCardsContainer.appendChild(card);
+
+                // Event Listeners
+                star.addEventListener('click', () => openCard(section.id, x, y));
+                card.querySelector('.close-button').addEventListener('click', () => closeCard(section.id));
+            });
+            
+            function openCard(id, x, y) {
+                const card = document.getElementById(id);
+                const scale = 3; // Zoom factor
+                
+                universe.style.transform = `scale(${scale}) translate(${-x / scale}px, ${-y / scale}px)`;
+                universe.classList.add('zoomed-in');
+                
+                setTimeout(() => {
+                    card.classList.add('active');
+                }, 400);
+            }
+
+            function closeCard(id) {
+                const card = document.getElementById(id);
+                card.classList.remove('active');
+                
+                setTimeout(() => {
+                    universe.style.transform = 'scale(1) translate(0, 0)';
+                    universe.classList.remove('zoomed-in');
+                }, 300);
+            }
+
+            // Parallax effect
+            const background = document.getElementById('background-stars');
+            window.addEventListener('mousemove', (e) => {
+                const mouseX = (e.clientX / window.innerWidth) - 0.5;
+                const mouseY = (e.clientY / window.innerHeight) - 0.5;
+                
+                genesisMap.style.transform = `translate(${-mouseX * 30}px, ${-mouseY * 30}px)`;
+                background.style.transform = `translate(${mouseX * 15}px, ${mouseY * 15}px)`;
+            });
+        });
     </script>
 </body>
 </html>

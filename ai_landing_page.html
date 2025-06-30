@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACTSYSTEMS - AIソリューション</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3a7bd5;
+            --secondary-color: #3a6073;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --light-gray-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --heading-font: 'Noto Sans JP', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.8;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 0;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            color: var(--white-color);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #hero-canvas {
+            position: absolute;
+            top: 0; left: 0; z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s 0.5s forwards;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin: 0 0 20px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto; margin-right: auto;
+        }
+
+        .cta-button {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--white-color);
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* --- General Section Styling --- */
+        .section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .bg-gray { background-color: var(--light-gray-bg); }
+
+        /* --- Services Section --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background: var(--white-color);
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.07);
+            padding: 40px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        /* --- CTA Section --- */
+        .cta-section {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--white-color);
+            text-align: center;
+        }
+        
+        .cta-section h2 { font-size: 2.2rem; margin-bottom: 20px; }
+        .cta-section p { font-size: 1.1rem; max-width: 600px; margin: 0 auto 30px; }
+        .cta-section .cta-button { background: var(--white-color); color: var(--primary-color); }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            background-color: #222;
+            color: #aaa;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .hero p { font-size: 1rem; }
+            .section-title h2 { font-size: 2rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content">
+            <h1>AIで、ビジネスの未来を再定義する</h1>
+            <p>私たちACTSYSTEMSは、先進的なAI技術を用いて、貴社のビジネス課題を解決し、新たな価値を創造するパートナーです。</p>
+            <a href="#contact" class="cta-button">まずはお問い合わせ</a>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <div class="container section">
+        <div class="section-title">
+            <h2>事業概要</h2>
+            <p>なぜ今、AIへの取り組みが必要なのか</p>
+        </div>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto;">
+            昨今のAIトレンドは、ものすごいスピードで進化を続けており、そのトレンドを追いかけるだけでも大変な状況です。これを実際の事業として検討し、お客様に価値を提供できるサービスに仕上げるまでには、日々試行錯誤を繰り返しております。私たちは、その複雑なAIの世界をナビゲートし、実用的で価値あるソリューションを提供することをお約束します。
+        </p>
+    </div>
+
+    <!-- Services Section -->
+    <section class="bg-gray section">
+        <div class="container">
+            <div class="section-title">
+                <h2>主力サービス</h2>
+                <p>貴社の課題に合わせたソリューション</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>OASIS (RAGシステム)</h3>
+                    <p>社外秘情報を安全に活用。プライベートな環境で、LLMの力を最大限に引き出すチャットシステムです。</p>
+                </div>
+                <div class="service-card">
+                    <h3>ヘルプデスクソリューション</h3>
+                    <p>過去の対応履歴という「資産」をAIで検索可能に。業務効率化とナレッジの有効活用を実現します。</p>
+                </div>
+                <div class="service-card">
+                    <h3>デレデレ君</h3>
+                    <p>電話対応の負担を軽減し、新入社員の定着をサポート。働きやすい環境づくりに貢献するツールです。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology & Partnership Section -->
+    <div class="container section">
+        <div class="section-title">
+            <h2>技術基盤とパートナーシップ</h2>
+            <p>信頼と実績のテクノロジー</p>
+        </div>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto;">
+            私たちは、Microsoft Azureを技術基盤として活用し、堅牢でスケーラブルなサービス開発を行っています。また、ソフトバンクの備後デジタルLABとの提携を通じて、地方創生にも貢献。最新の技術と強力なネットワークで、お客様の挑戦をサポートします。
+        </p>
+    </div>
+
+    <!-- CTA Section -->
+    <section id="contact" class="cta-section section">
+        <div class="container">
+            <h2>さあ、AI活用の第一歩を踏み出しましょう</h2>
+            <p>「何から始めればいいかわからない」という段階でも全く問題ありません。まずは貴社の課題をお聞かせください。最適な活用方法を一緒に考えます。</p>
+            <a href="mailto:example@actsystems.co.jp" class="cta-button">専門家に相談する</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 ACTSYSTEMS Inc. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Particle animation for hero section
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        const mouse = {
+            x: null,
+            y: null,
+            radius: (canvas.height/100) * (canvas.width/100)
+        }
+
+        window.addEventListener('mousemove', 
+            function(event) {
+                mouse.x = event.x;
+                mouse.y = event.y;
+            }
+        );
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = 'rgba(58, 123, 213, 0.5)';
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 5) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2;
+                let directionY = (Math.random() * .4) - .2;
+                let color = '#8C5523';
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0,0,innerWidth, innerHeight);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connect();
+        }
+
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                    + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width/7) * (canvas.height/7)) {
+                        opacityValue = 1 - (distance/20000);
+                        ctx.strokeStyle='rgba(58, 123, 213, ' + opacityValue + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        window.addEventListener('resize', function(){
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            mouse.radius = ((canvas.height/80) * (canvas.height/80));
+            init();
+        });
+
+        init();
+        animate();
+        
+        // Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

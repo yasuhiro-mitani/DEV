@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACTSYSTEMS AI事業 - イノベーションへの道</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@100;200;300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-dark: #0a0618;
+            --secondary-dark: #1a0f2e;
+            --accent-neon: #00ff88;
+            --accent-purple: #9c27ff;
+            --accent-cyan: #00e5ff;
+            --accent-orange: #ff6b35;
+            --text-light: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --gradient-main: linear-gradient(45deg, var(--primary-dark), var(--secondary-dark), #2d1b4e, #1a1a3a);
+            --glow-neon: 0 0 30px rgba(0, 255, 136, 0.4);
+            --glow-purple: 0 0 30px rgba(156, 39, 255, 0.4);
+            --glow-cyan: 0 0 30px rgba(0, 229, 255, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--gradient-main);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated background grid */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .orb:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--accent-neon) 0%, transparent 70%);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+            top: 60%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .orb:nth-child(3) {
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%);
+            bottom: 30%;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 15px 30px;
+            z-index: 1000;
+            display: flex;
+            gap: 30px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 500;
+        }
+
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--accent-neon);
+            text-shadow: var(--glow-neon);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: var(--glow-neon);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.3)); }
+            to { filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.6)); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .hero-cta {
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-cyan));
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            color: var(--primary-dark);
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow-neon);
+            font-family: 'Orbitron', monospace;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Section styling */
+        .section {
+            min-height: 100vh;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .section-title.neon {
+            color: var(--accent-neon);
+            text-shadow: var(--glow-neon);
+        }
+
+        .section-title.purple {
+            color: var(--accent-purple);
+            text-shadow: var(--glow-purple);
+        }
+
+        .section-title.cyan {
+            color: var(--accent-cyan);
+            text-shadow: var(--glow-cyan);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* Service Cards - Vertical Layout */
+        .services-container {
+            margin-top: 60px;
+        }
+
+        .service-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 0;
+            margin-bottom: 40px;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateX(-100px) rotateY(-15deg);
+        }
+
+        .service-card.visible {
+            opacity: 1;
+            transform: translateX(0) rotateY(0deg);
+        }
+
+        .service-card:nth-child(even) {
+            transform: translateX(100px) rotateY(15deg);
+        }
+
+        .service-card:nth-child(even).visible {
+            transform: translateX(0) rotateY(0deg);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-neon), var(--accent-cyan), var(--accent-purple));
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            padding: 40px 50px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--glass-border);
+            gap: 30px;
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3));
+            animation: iconGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes iconGlow {
+            from { filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.6)); }
+        }
+
+        .service-header-text {
+            flex: 1;
+        }
+
+        .service-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .service-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .service-status {
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-cyan));
+            color: var(--primary-dark);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Orbitron', monospace;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .service-content {
+            padding: 50px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .service-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .service-description strong {
+            color: var(--text-light);
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .service-visual {
+            height: 200px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: var(--text-muted);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .service-visual::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-neon), transparent);
+            animation: scan 4s ease-in-out infinite;
+        }
+
+        .service-card:hover .service-visual {
+            border-color: var(--accent-neon);
+            background: rgba(0, 255, 136, 0.05);
+            transform: scale(1.05);
+        }
+
+        .service-features {
+            padding: 0 50px 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: var(--accent-neon);
+            transform: translateY(-5px);
+        }
+
+        .feature-item-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-item-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        /* Full-width feature section */
+        .feature-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 60px;
+            margin: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-neon), var(--accent-cyan), var(--accent-purple), var(--accent-orange));
+        }
+
+        .feature-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .feature-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .feature-text strong {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .feature-visual {
+            height: 300px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--text-muted);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-visual::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-neon), transparent);
+            animation: scan 3s ease-in-out infinite;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Statistics section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-neon);
+            box-shadow: var(--glow-neon);
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent-neon);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 80px 0;
+            text-align: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            margin-top: 100px;
+        }
+
+        .footer-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent-neon);
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+                top: 20px;
+                padding: 20px;
+            }
+
+            .feature-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .service-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .service-header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 30px;
+            }
+
+            .service-content,
+            .service-features {
+                padding: 30px;
+            }
+
+            .feature-section {
+                padding: 40px 30px;
+            }
+
+            .section {
+                padding: 80px 0;
+            }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--accent-neon);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+        }
+
+        .scroll-indicator:hover {
+            transform: scale(1.1);
+            background: var(--accent-neon);
+            color: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+
+    <nav class="nav">
+        <a href="#home" class="nav-item active">HOME</a>
+        <a href="#overview" class="nav-item">概要</a>
+        <a href="#tech" class="nav-item">技術</a>
+        <a href="#services" class="nav-item">サービス</a>
+        <a href="#partnership" class="nav-item">連携</a>
+    </nav>
+
+    <div class="container">
+        <section id="home" class="hero">
+            <h1 class="hero-title">AI REVOLUTION</h1>
+            <p class="hero-subtitle">ACTSYSTEMS次世代AI事業</p>
+            <button class="hero-cta" onclick="scrollToSection('overview')">事業を探索する</button>
+        </section>
+
+        <section id="overview" class="section">
+            <div class="section-header">
+                <h2 class="section-title neon">事業概要</h2>
+                <p class="section-subtitle">革新的なAIソリューションで未来を創造</p>
+            </div>
+
+            <div class="feature-section">
+                <h3 class="feature-title">🚀 新たな挑戦の始まり</h3>
+                <div class="feature-content">
+                    <div class="feature-text">
+                        <p><strong>2024年、ACTSYSTEMSは新章を開きました。</strong>急速に進化するAI技術の波に乗り、お客様に真の価値を提供するソリューションを開発しています。</p>
+                        <br>
+                        <p>私たちは単なるトレンドフォロワーではありません。<strong>実用性と革新性を両立</strong>させた、本当に役立つAIシステムの構築を目指しています。</p>
+                    </div>
+                    <div class="feature-visual">
+                        🎯
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">2024</span>
+                    <span class="stat-label">事業開始年</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3+</span>
+                    <span class="stat-label">主要サービス</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">可能性</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech" class="section">
+            <div class="section-header">
+                <h2 class="section-title purple">技術基盤</h2>
+                <p class="section-subtitle">クラウドネイティブなAIインフラストラクチャ</p>
+            </div>
+
+            <div class="feature-section">
+                <h3 class="feature-title">⚡ Microsoft Azure × AI</h3>
+                <div class="feature-content">
+                    <div class="feature-visual">
+                        ☁️
+                    </div>
+                    <div class="feature-text">
+                        <p>ダイワボウ情報システム様からの紹介で始まったAzureとの出会い。現在では<strong>独自のクラウド環境を構築</strong>し、スケーラブルで安全なAIサービスを提供しています。</p>
+                        <br>
+                        <p>最新のAI技術とクラウドインフラの融合により、<strong>お客様のニーズに応える柔軟なソリューション</strong>を実現します。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section">
+            <div class="section-header">
+                <h2 class="section-title cyan">革新的サービス</h2>
+                <p class="section-subtitle">AIが実現する新しい働き方</p>
+            </div>
+
+            <div class="services-container">
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">🔍</div>
+                        <div class="service-header-text">
+                            <h3 class="service-title">OASIS</h3>
+                            <p class="service-subtitle">RAG検索システム</p>
+                        </div>
+                        <div class="service-status">ACTIVE</div>
+                    </div>
+                    <div class="service-content">
+                        <div class="service-description">
+                            <p>社外秘の重要な情報を、<strong>LLM技術を使ってチャットベースでの質問・回答を可能にする</strong>革新的なソリューションです。プライベートクラウド環境で構築されており、セキュリティと利便性を両立させています。</p>
+                            <br>
+                            <p>RAG（Retrieval-Augmented Generation）開発のノウハウを活用し、<strong>企業固有の知識を安全かつ効率的に活用</strong>できる環境を提供します。</p>
+                        </div>
+                        <div class="service-visual">🚀</div>
+                    </div>
+                    <div class="service-features">
+                        <div class="feature-item">
+                            <div class="feature-item-icon">🔒</div>
+                            <div class="feature-item-text">プライベートクラウド</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-item-icon">⚡</div>
+                            <div class="feature-item-text">高速検索</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-item-icon">🧠</div>
+                            <div class="feature-item-text">AI対話</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">💬</div>
+                        <div class="service-header-text">
+                            <h3 class="service-title">ヘルプデスク</h3>
+                            <p class="service-subtitle">AI検索ソリューション</p>
+                        </div>
+                        <div class="service-status">ACTIVE</div>
+                    </div>
+                    <div class="service-content">
+                        <div class="service-description">
+                            <p>店舗からの問い合わせ対応履歴をAI検索できるシステムです。<strong>過去の対応履歴は貴重な企業資産</strong>として蓄積されており、それを有効活用する手段として開発されました。</p>
+                            <br>
+                            <p>膨大な履歴データから最適な解決策を瞬時に見つけ出し、<strong>一貫性のある高品質なサポート</strong>を提供します。</p>
+                        </div>
+                        <div class="service-visual">💡</div>
+                    </div>
+                    <div class="service-features">
+                        <div class="feature-item">
+                            <div class="feature-item-icon">📊</div>
+                            <div class="feature-item-text">履歴分析</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-item-icon">🎯</div>
+                            <div class="feature-item-text">最適提案</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-item-icon">⏰</div>
+                            <div class="feature-item-text">即座対応</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">📞</div>
+                        <div class="service-header-text">
+                            <h3 class="service-title">デレデレ君</h3>
+                            <p class="service-subtitle">電話対応軽減ツール</p>
+                        </div>
+                        <div class="service-status">BETA</div>
+                    </div>
+                    <div class="service-content">
+                        <div class="service-description">
+                            <p>このツールは、<strong>新入社員の離職要因を減らす</strong>ことを目的として開発されました。電話受付作業を軽減することで、より重要な業務に集中できる環境を提供します。</p>
+                            <br>
+                            <p>AI技術を活用した自動応答機能により、<strong>働きやすい職場環境の実現</strong>をサポートします。</p>
+                        </div>
+                        <div class="service-visual">🤖</div>
+                    </div>
+                    <div class="service-features">
+                        <div class="feature-item">
+                            <div class="feature-item-icon">🎧</div>
+                            <div class="feature-item-text">自動応答</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-item-icon">📈</div>
+                            <div class="feature-item-text">効率向上</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-item-icon">😊</div>
+                            <div class="feature-item-text">働きやすさ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-section">
+                <h3 class="feature-title">💡 チャットボット成功の秘訣</h3>
+                <div class="feature-content">
+                    <div class="feature-text">
+                        <p>「電話の方が早い」「結局使えない」─ そんな状況を避けるため、私たちは<strong>実際に役立つシステム設計</strong>にこだわります。</p>
+                        <br>
+                        <p>成功の鍵は<strong>「みんなが使いたくなる機能」</strong>の実現。ユーザビリティと実用性を両立したソリューションを提供します。</p>
+                    </div>
+                    <div class="feature-visual">
+                        🤖
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="partnership" class="section">
+            <div class="section-header">
+                <h2 class="section-title neon">戦略的パートナーシップ</h2>
+                <p class="section-subtitle">地方創生とデジタル革新</p>
+            </div>
+
+            <div class="feature-section">
+                <h3 class="feature-title">🤝 ソフトバンク備後デジタルLAB</h3>
+                <div class="feature-content">
+                    <div class="feature-visual">
+                        🌍
+                    </div>
+                    <div class="feature-text">
+                        <p>備後地方の繊維産業をデジタル・AI技術で新たなステージへ。<strong>地方創生を目的とした革新的な取り組み</strong>に参加しています。</p>
+                        <br>
+                        <p>伝統産業とテクノロジーの融合により、<strong>持続可能な地域発展</strong>を目指します。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <h3 class="footer-title">未来への招待</h3>
+        <p class="footer-text">
+            ACTSYSTEMSは、AI技術を通じてお客様の成功を支援し続けます。<br>
+            共に新しい未来を創造しましょう。
+        </p>
+    </footer>
+
+    <div class="scroll-indicator" onclick="scrollToTop()">↑</div>
+
+    <script>
+        // Smooth scrolling
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Navigation active state
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('.section, .hero');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = 'home';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    current = section.id;
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Service cards scroll animation
+        const serviceObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 300);
+                }
+            });
+        }, { 
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observe service cards for special animation
+            document.querySelectorAll('.service-card').forEach(card => {
+                serviceObserver.observe(card);
+            });
+
+            // Observe other elements for animation
+            document.querySelectorAll('.feature-section, .stat-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+
+            // Navigation click handlers
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    scrollToSection(target);
+                });
+            });
+
+            // Update navigation on scroll
+            window.addEventListener('scroll', updateActiveNav);
+            
+            // Random orb movement
+            document.querySelectorAll('.orb').forEach((orb, index) => {
+                setInterval(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    orb.style.left = x + 'px';
+                    orb.style.top = y + 'px';
+                }, 8000 + index * 2000);
+            });
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>

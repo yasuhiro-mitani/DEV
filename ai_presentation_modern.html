@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI事業紹介資料 - Modern Design</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 75%, #0f3460 100%);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --accent-primary: #00d4ff;
+            --accent-secondary: #ff006e;
+            --accent-tertiary: #8338ec;
+            --glow-color: rgba(0, 212, 255, 0.3);
+            --shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.4);
+            --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 100px 0 80px;
+            position: relative;
+        }
+
+        .header-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 0 30px var(--glow-color);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Timeline */
+        .timeline-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, transparent, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary), transparent);
+            transform: translateX(-50%);
+            opacity: 0.6;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 60px 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: calc(50% + 40px);
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: calc(50% + 40px);
+            text-align: left;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            background: var(--card-bg);
+            border: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: translateX(-50%) scale(1.5);
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.4s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .timeline-header {
+            padding: 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .timeline-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .timeline-item.is-open .timeline-header h2 {
+            color: var(--accent-primary);
+        }
+
+        .toggle-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            background: transparent;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toggle-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--accent-primary);
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            border-radius: 50%;
+        }
+
+        .timeline-item.is-open .toggle-btn::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .timeline-item.is-open .toggle-btn {
+            color: var(--bg-gradient);
+            transform: rotate(45deg);
+        }
+
+        .timeline-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .timeline-item.is-open .timeline-body {
+            max-height: 2000px;
+        }
+
+        .timeline-body-content {
+            padding: 30px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin: 20px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 2px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+        p strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-size: 0.8rem;
+            top: 2px;
+        }
+
+        .media-placeholder {
+            margin: 30px 0;
+            padding: 60px 30px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .media-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .media-placeholder:hover::before {
+            left: 100%;
+        }
+
+        .media-placeholder:hover {
+            border-color: var(--accent-primary);
+            background: rgba(0, 212, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .media-placeholder p {
+            color: var(--text-muted);
+            font-style: italic;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .timeline-line {
+                left: 30px;
+            }
+
+            .timeline-dot {
+                left: 30px;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 70px;
+                margin-right: 0;
+                text-align: left;
+            }
+
+            .timeline-header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .timeline-header h2 {
+                font-size: 1.4rem;
+                text-align: center;
+            }
+
+            .timeline-body-content {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .scroll-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Loading animation */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="scroll-indicator">
+        <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-glow"></div>
+            <h1 class="fade-in">AI事業紹介</h1>
+            <p class="subtitle fade-in">Next Generation Solutions</p>
+        </header>
+
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h2>事業概要・背景</h2>
+                        <div class="toggle-btn">+</div>
+                    </div>
+                    <div class="timeline-body">
+                        <div class="timeline-body-content">
+                            <p>私たちACTSYSTEMSでは、<strong>2024年から新たなチームを編成し、AI事業をスタート</strong>いたしました。この事業は、当社の新たな事業の一角を担う重要な取り組みとして位置づけております。</p>
+                            <p>昨今のAIトレンドは、ものすごいスピードで進化を続けており、そのトレンドを追いかけるだけでも大変な状況です。これを実際の事業として検討し、お客様に価値を提供できるサービスに仕上げるまでには、日々試行錯誤を繰り返しながら取り組んでおります。</p>
+                            <div class="media-placeholder">
+                                <p>🎬 事業イメージビデオなどをここに挿入</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h2>技術基盤・環境構築</h2>
+                        <div class="toggle-btn">+</div>
+                    </div>
+                    <div class="timeline-body">
+                        <div class="timeline-body-content">
+                            <p>当初は、ダイワボウ情報システム様からご紹介いただいたMicrosoft Azureを利用し、クラウド環境での基盤構築から始めました。現在では、<strong>独自にMicrosoft Azureの環境を利活用</strong>し、AI技術を駆使したサービス開発を進めております。</p>
+                            <div class="media-placeholder">
+                                <p>⚡ 技術スタックやアーキテクチャ図をここに挿入</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h2>主要サービス・ソリューション</h2>
+                        <div class="toggle-btn">+</div>
+                    </div>
+                    <div class="timeline-body">
+                        <div class="timeline-body-content">
+                            <div class="section-title">OASIS（RAGシステム）</div>
+                            <p>これは、RAG開発のノウハウを活用し、プライベートクラウド環境で構築したシステムです。<strong>社外秘の重要な情報を、LLM技術を使ってチャットベースでの質問・回答を可能にする</strong>ソリューションです。</p>
+                            <div class="media-placeholder">
+                                <p>🚀 OASISのデモ動画をここに挿入</p>
+                            </div>
+                            
+                            <div class="section-title">ヘルプデスクソリューション</div>
+                            <p>店舗からの問い合わせ対応履歴をAI検索できるシステムを開発しました。<strong>過去の対応履歴は貴重な企業資産</strong>として蓄積されており、それを有効活用する手段の一つとして位置づけております。</p>
+                            <div class="media-placeholder">
+                                <p>💬 ヘルプデスクソリューションの画面キャプチャをここに挿入</p>
+                            </div>
+                            
+                            <div class="section-title">デレデレ君（電話対応軽減ツール）</div>
+                            <p>このツールは、<strong>新入社員の離職要因を減らす</strong>ことを目的として開発しました。電話受付作業を軽減することで、働きやすい環境づくりをサポートします。</p>
+                            <div class="media-placeholder">
+                                <p>📞 デレデレ君の機能紹介動画をここに挿入</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h2>チャットボット活用に関する考察</h2>
+                        <div class="toggle-btn">+</div>
+                    </div>
+                    <div class="timeline-body">
+                        <div class="timeline-body-content">
+                            <p>店舗様にはすでにチャットボットを導入されているとお聞きしております。チャットボット成功の最重要ポイントは<strong>「どうやったらみんなが利用してくれる機能になるのか」</strong>という点だと考えております。</p>
+                            <p>「電話したほうが早い」「結局使えない」といった状況に陥らないよう、実際に役立つシステムづくりが何より大切です。</p>
+                            <div class="media-placeholder">
+                                <p>💡 活用イメージや比較図などをここに挿入</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h2>戦略的パートナーシップ</h2>
+                        <div class="toggle-btn">+</div>
+                    </div>
+                    <div class="timeline-body">
+                        <div class="timeline-body-content">
+                            <p>ソフトバンクの備後デジタルLABと提携し、<strong>地方創生を目的とした活動</strong>に参加しております。具体的には、備後地方における繊維産業を、デジタルやAIの活用によって新たなステージへ進めていこうとする取り組みです。</p>
+                            <div class="media-placeholder">
+                                <p>🤝 備後デジタルLABとの連携イメージ画像をここに挿入</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h2>まとめ</h2>
+                        <div class="toggle-btn">+</div>
+                    </div>
+                    <div class="timeline-body">
+                        <div class="timeline-body-content">
+                            <p>私たちACTSYSTEMSは、AI技術を活用した実用的なソリューションの提供を通じて、お客様の業務効率化と価値創造に貢献してまいります。今後ともよろしくお願いいたします。</p>
+                            <p>ご質問やご相談がございましたら、どうぞお気軽にお声がけください。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particles.appendChild(particle);
+            }
+        }
+
+        // Scroll progress indicator
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+        }
+
+        // Intersection Observer for timeline items
+        function initTimelineObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 200);
+                    }
+                });
+            }, { 
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                observer.observe(item);
+            });
+        }
+
+        // Toggle accordion
+        function initAccordion() {
+            document.querySelectorAll('.timeline-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    const item = this.closest('.timeline-item');
+                    const body = item.querySelector('.timeline-body');
+                    const btn = this.querySelector('.toggle-btn');
+                    
+                    const isOpen = item.classList.contains('is-open');
+                    
+                    // Close all other items (optional)
+                    // document.querySelectorAll('.timeline-item').forEach(otherItem => {
+                    //     if (otherItem !== item) {
+                    //         otherItem.classList.remove('is-open');
+                    //         otherItem.querySelector('.toggle-btn').textContent = '+';
+                    //     }
+                    // });
+                    
+                    // Toggle current item
+                    if (isOpen) {
+                        item.classList.remove('is-open');
+                        btn.textContent = '+';
+                    } else {
+                        item.classList.add('is-open');
+                        btn.textContent = '×';
+                    }
+                });
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            initTimelineObserver();
+            initAccordion();
+            
+            // Add scroll listener
+            window.addEventListener('scroll', updateScrollProgress);
+            
+            // Initial scroll progress
+            updateScrollProgress();
+        });
+    </script>
+</body>
+</html>
