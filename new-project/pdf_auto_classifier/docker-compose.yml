@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  pdf-classifier:
+    build: .
+    container_name: pdf-auto-classifier
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - /mnt/c/Users/u10740/Documents/PDFs/input:/app/input
+      - /mnt/c/Users/u10740/Documents/PDFs/output:/app/output
+      - /mnt/c/Users/u10740/Documents/PDFs/error:/app/error
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=INFO

@@ -2,7 +2,30 @@
   "permissions": {
     "allow": [
       "Bash(python3:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(convert:*)",
+      "Bash(ls:*)",
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(pip3 install:*)",
+      "Bash(~/.local/bin/pytest tests/ -v)",
+      "Bash(PYTHONPATH=/mnt/c/Users/u10740/DEV/new-project/pdf_auto_classifier ~/.local/bin/pytest tests/ -v)",
+      "Bash(PYTHONPATH=/mnt/c/Users/u10740/DEV/new-project/pdf_auto_classifier python3 src/main.py --help)",
+      "Bash(docker-compose:*)",
+      "Bash(docker:*)",
+      "Bash(touch:*)",
+      "Bash(cp:*)",
+      "Bash(find:*)",
+      "Bash(git init:*)",
+      "Bash(npm start)",
+      "Bash(echo $PWD)",
+      "Bash(echo $OLDPWD)",
+      "Bash(npm --prefix /c/Users/u10740/DEV/dev-test test)",
+      "Bash(npm:*)",
+      "Bash(pip --version)",
+      "Bash(python:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }

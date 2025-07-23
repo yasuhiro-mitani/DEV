@@ -1,0 +1,61 @@
+app:
+  name: "PDF Auto Classifier"
+  version: "1.0.0"
+  log_level: "DEBUG"
+
+folders:
+  input: "/app/input"
+  output: "/app/output"
+  error: "/app/error"
+  logs: "/app/logs"
+
+processing:
+  max_file_size_mb: 50
+  max_pages: 5
+  timeout_seconds: 30
+  ocr_language: "jpn"
+
+po_detection:
+  keywords:
+    - "注文書"
+    - "PURCHASE ORDER"
+    - "発注書"
+    - "オーダー"
+    - "ORDER"
+    - "注文"
+    - "下記の通り注文致します"
+    - "注文致します"
+    - "作業費用"
+  confidence_threshold: 0.15
+
+metadata_extraction:
+  date_patterns:
+    - '(\d{4})[/-](\d{1,2})[/-](\d{1,2})'
+    - '(\d{1,2})[/-](\d{1,2})[/-](\d{4})'
+    - '(\d{4})年(\d{1,2})月(\d{1,2})日'
+  
+  order_number_patterns:
+    - '注文番号[:：]\s*([A-Za-z0-9-]+)'
+    - 'ORDER\s+NO[:：.]\s*([A-Za-z0-9-]+)'
+    - 'PO\s+NO[:：.]\s*([A-Za-z0-9-]+)'
+    - '発注番号[:：]\s*([A-Za-z0-9-]+)'
+  
+  company_patterns:
+    - '株式会社\s*([^\s\n]+)'
+    - '有限会社\s*([^\s\n]+)'
+    - '([^\s\n]+)\s*株式会社'
+    - '([^\s\n]+)\s*有限会社'
+    - 'Corp\.\s*([^\s\n]+)'
+    - '([^\s\n]+)\s*Corp\.'
+
+alerts:
+  teams_webhook_url: ""
+  enable_notifications: true
+  notification_types:
+    - "error"
+    - "warning"
+
+logging:
+  format: "json"
+  retention_days: 365
+  max_file_size_mb: 100
