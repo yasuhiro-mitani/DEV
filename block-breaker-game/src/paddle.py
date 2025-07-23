@@ -13,4 +13,5 @@ class Paddle:
         self.x += self.speed
 
     def draw(self, screen):
+        import pygame
         pygame.draw.rect(screen, (255, 255, 255), (self.x, self.y, self.width, self.height))

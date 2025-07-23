@@ -5,9 +5,8 @@ class Brick:
 
     def draw(self, surface):
         if not self.is_hit:
-            # Draw the brick on the given surface
-            # This is a placeholder for the actual drawing code
-            pass
+            import pygame
+            pygame.draw.rect(surface, (255, 0, 0), self.rect)
 
     def hit(self):
         self.is_hit = True

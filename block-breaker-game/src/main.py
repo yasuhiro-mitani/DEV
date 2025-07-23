@@ -6,14 +6,15 @@ def main():
     game = Game()
     game.start_game()
 
-    while True:
-        game.update()
-        game.draw()
-
+    while game.running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                return
+                game.running = False
+        
+        game.update()
+        game.draw()
+    
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
